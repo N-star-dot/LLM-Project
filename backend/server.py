@@ -50,6 +50,22 @@ def search(req: SearchRequest):
     )
 
 
+class VisionRequest(BaseModel):
+    imageBase64: str
+    mimeType: str = "image/jpeg"
+
+class VisionResponse(BaseModel):
+    vibe: str
+    error: str | None = None
+
+@app.post("/vision", response_model=VisionResponse)
+def vision(req: VisionRequest):
+    try:
+        vibe = agent.extract_vibe_from_image(req.imageBase64, req.mimeType)
+        return VisionResponse(vibe=vibe)
+    except Exception as e:
+        return VisionResponse(vibe="", error=str(e))
+
 @app.get("/health")
 def health():
     return {"status": "ok"}

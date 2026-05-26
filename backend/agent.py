@@ -138,3 +138,31 @@ You MUST output ONLY a valid JSON object.
         return "Here are the perfect pieces for your aesthetic!", tool_result.to_dict(orient="records"), False
 
     return "I couldn't process your request.", None, False
+
+def extract_vibe_from_image(base64_str: str, mime_type: str = "image/jpeg") -> str:
+    """
+    Passes the base64 image to the Subconscious vision model to extract a vibe description.
+    """
+    image_url = f"data:{mime_type};base64,{base64_str}" if not base64_str.startswith("http") else base64_str
+    
+    response = client.chat.completions.create(
+        model="subconscious/tim-qwen3.6-27b",
+        max_tokens=300,
+        messages=[
+            {
+                "role": "user",
+                "content": [
+                    {
+                        "type": "image_url",
+                        "image_url": {"url": image_url},
+                    },
+                    {
+                        "type": "text",
+                        "text": "You are an expert interior designer. Analyze this room or furniture image and describe the aesthetic in rich, specific language.\\n\\nReturn a single paragraph (2-3 sentences) describing:\\n- The overall aesthetic name (e.g. Dark Academia, Japandi, Coastal Grandmother, Maximalist, Cottagecore)\\n- The dominant colors, materials, and textures you see\\n- The mood and feeling of the space\\n\\nWrite it as a vibe description a shopper would type, e.g. \\\"Dark academia library vibes — deep mahogany wood, tufted velvet in forest green and burgundy, warm brass accents, moody and intellectual atmosphere.\\\"\\n\\nOnly return the vibe description. No other text."
+                    }
+                ]
+            }
+        ]
+    )
+    content = response.choices[0].message.content
+    return content.strip() if content else ""

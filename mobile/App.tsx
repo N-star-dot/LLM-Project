@@ -16,6 +16,7 @@ import {
   Alert,
   ScrollView,
 } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 
 // ── Types ──
 interface Product {
@@ -37,6 +38,7 @@ interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;
   products?: Product[] | null;
+  image_url?: string;
 }
 
 // ── Config ──
@@ -70,7 +72,7 @@ export default function App() {
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([{
     id: '1',
     role: 'assistant',
-    content: "Hi! I'm your Wayfair Aesthetic Matchmaker. Describe your dream room and we'll find pieces to match your vibe!"
+    content: "Hi! I'm your Wayfair Aesthetic Matchmaker. Describe your dream room or upload a photo, and we'll find pieces to match your vibe!"
   }]);
   const [chatLoading, setChatLoading] = useState(false);
   const flatListRef = useRef<FlatList>(null);
@@ -130,9 +132,16 @@ export default function App() {
     }
   };
 
-  const handleChatSend = async () => {
-    if (!chatInput.trim()) return;
-    const userMsg: ChatMessage = { id: Date.now().toString(), role: 'user', content: chatInput.trim() };
+  const handleChatSend = async (customText?: string, imageUrl?: string) => {
+    const textToSend = customText || chatInput;
+    if (!textToSend.trim()) return;
+    
+    const userMsg: ChatMessage = { 
+      id: Date.now().toString(), 
+      role: 'user', 
+      content: textToSend.trim(),
+      image_url: imageUrl 
+    };
     const newHistory = [...chatHistory, userMsg];
     
     setChatHistory(newHistory);
@@ -165,6 +174,57 @@ export default function App() {
     }
   };
 
+  // ── Vision Upload Handler ──
+  const handlePickImage = async (isChat: boolean) => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      allowsEditing: true,
+      quality: 0.5,
+      base64: true,
+    });
+
+    if (!result.canceled && result.assets && result.assets[0].base64) {
+      const base64 = result.assets[0].base64;
+      const mimeType = result.assets[0].mimeType || 'image/jpeg';
+      const uri = result.assets[0].uri;
+
+      if (isChat) {
+        setChatLoading(true);
+      } else {
+        setHomeLoading(true);
+        setHasSearched(true);
+      }
+
+      try {
+        const res = await fetch(`${API_URL}/vision`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ imageBase64: base64, mimeType }),
+        });
+        const data = await res.json();
+        
+        if (data.vibe) {
+          if (isChat) {
+             // Show user uploading image
+             handleChatSend(`I uploaded a photo. It looks like: ${data.vibe}`, uri);
+          } else {
+             setHomeQuery(data.vibe);
+             handleHomeSearch(data.vibe);
+          }
+        } else {
+          Alert.alert('Vision Error', data.error || 'Failed to extract vibe.');
+          setChatLoading(false);
+          setHomeLoading(false);
+        }
+      } catch (err) {
+        Alert.alert('Error', 'Could not reach vision API.');
+        setChatLoading(false);
+        setHomeLoading(false);
+      }
+    }
+  };
+
   // ── Renderers ──
 
   const renderProduct = ({ item }: { item: Product }) => (
@@ -184,9 +244,12 @@ export default function App() {
   const renderHome = () => (
     <View style={{ flex: 1 }}>
       <View style={styles.searchContainer}>
+        <TouchableOpacity style={styles.cameraButton} onPress={() => handlePickImage(false)}>
+          <Text style={styles.cameraIcon}>📷</Text>
+        </TouchableOpacity>
         <TextInput
           style={styles.searchInput}
-          placeholder="Describe your vibe..."
+          placeholder="Describe vibe or upload..."
           placeholderTextColor="#999"
           value={homeQuery}
           onChangeText={setHomeQuery}
@@ -201,7 +264,7 @@ export default function App() {
       {homeLoading ? (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#7F187F" />
-          <Text style={styles.loadingText}>Translating your aesthetic...</Text>
+          <Text style={styles.loadingText}>Analyzing your aesthetic...</Text>
         </View>
       ) : !hasSearched ? (
         <View style={styles.suggestionsContainer}>
@@ -245,6 +308,9 @@ export default function App() {
         contentContainerStyle={{ padding: 16, paddingBottom: 20 }}
         renderItem={({ item }) => (
           <View style={[styles.chatBubbleContainer, item.role === 'user' ? styles.chatBubbleUser : styles.chatBubbleAI]}>
+            {item.image_url && (
+              <Image source={{uri: item.image_url}} style={{width: 150, height: 150, borderRadius: 8, marginBottom: 8}} />
+            )}
             <Text style={[styles.chatText, item.role === 'user' ? styles.chatTextUser : styles.chatTextAI]}>{item.content}</Text>
             {item.products && item.products.length > 0 && (
               <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 12 }}>
@@ -266,17 +332,21 @@ export default function App() {
       {chatLoading && (
         <View style={{ padding: 10, alignItems: 'center' }}>
           <ActivityIndicator size="small" color="#7F187F" />
+          <Text style={{fontSize: 10, color: '#888', marginTop: 4}}>Analyzing vision / stylist...</Text>
         </View>
       )}
       <View style={styles.chatInputContainer}>
+        <TouchableOpacity style={styles.chatCameraBtn} onPress={() => handlePickImage(true)}>
+          <Text style={{fontSize: 20}}>📷</Text>
+        </TouchableOpacity>
         <TextInput
           style={styles.chatInput}
-          placeholder="Ask the AI Stylist..."
+          placeholder="Ask or upload..."
           value={chatInput}
           onChangeText={setChatInput}
-          onSubmitEditing={handleChatSend}
+          onSubmitEditing={() => handleChatSend()}
         />
-        <TouchableOpacity style={styles.chatSendBtn} onPress={handleChatSend}>
+        <TouchableOpacity style={styles.chatSendBtn} onPress={() => handleChatSend()}>
           <Text style={{color: '#fff', fontWeight: 'bold'}}>Send</Text>
         </TouchableOpacity>
       </View>
@@ -383,9 +453,11 @@ const styles = StyleSheet.create({
   subtitle: { fontSize: 14, color: '#888', marginTop: 2 },
   
   // Home Styles
-  searchContainer: { flexDirection: 'row', margin: 16, backgroundColor: '#fff', borderRadius: 12, borderWidth: 1, borderColor: '#e0e0e0' },
-  searchInput: { flex: 1, padding: 14, fontSize: 16 },
-  searchButton: { backgroundColor: '#7F187F', paddingHorizontal: 20, justifyContent: 'center' },
+  searchContainer: { flexDirection: 'row', margin: 16, backgroundColor: '#fff', borderRadius: 12, borderWidth: 1, borderColor: '#e0e0e0', alignItems: 'center' },
+  cameraButton: { paddingLeft: 16, paddingRight: 8 },
+  cameraIcon: { fontSize: 20 },
+  searchInput: { flex: 1, paddingVertical: 14, fontSize: 16 },
+  searchButton: { backgroundColor: '#7F187F', paddingHorizontal: 20, height: '100%', justifyContent: 'center' },
   searchButtonText: { fontSize: 20 },
   loadingContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
   loadingText: { marginTop: 12, fontSize: 16, color: '#7F187F' },
@@ -417,9 +489,10 @@ const styles = StyleSheet.create({
   chatText: { fontSize: 16, lineHeight: 22 },
   chatTextUser: { color: '#fff' },
   chatTextAI: { color: '#000' },
-  chatInputContainer: { flexDirection: 'row', padding: 12, backgroundColor: '#fff', borderTopWidth: 1, borderColor: '#ddd' },
+  chatInputContainer: { flexDirection: 'row', padding: 12, backgroundColor: '#fff', borderTopWidth: 1, borderColor: '#ddd', alignItems: 'center' },
+  chatCameraBtn: { marginRight: 10 },
   chatInput: { flex: 1, backgroundColor: '#f2f2f7', borderRadius: 20, paddingHorizontal: 16, paddingVertical: 10, fontSize: 16, marginRight: 10 },
-  chatSendBtn: { backgroundColor: '#7F187F', borderRadius: 20, paddingHorizontal: 16, justifyContent: 'center' },
+  chatSendBtn: { backgroundColor: '#7F187F', borderRadius: 20, paddingHorizontal: 16, paddingVertical: 10, justifyContent: 'center' },
   chatProductCard: { width: 140, backgroundColor: '#fff', borderRadius: 8, padding: 8, marginRight: 12, borderWidth: 1, borderColor: '#eee' },
   chatProductImage: { width: '100%', height: 100, borderRadius: 4, marginBottom: 8 },
   chatProductName: { fontSize: 12, fontWeight: '600', marginBottom: 4 },
