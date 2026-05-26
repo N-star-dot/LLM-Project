@@ -1,0 +1,897 @@
+[
+    {
+        "id": 1,
+        "name": "Ashford Velvet Reading Chair",
+        "category": "chair",
+        "price": 649,
+        "width_in": 30,
+        "height_in": 38,
+        "depth_in": 32,
+        "primary_vibe": "dark academia",
+        "color_palette": [
+            "midnight blue",
+            "deep burgundy",
+            "aged brass",
+            "ivory"
+        ],
+        "style_tags": [
+            "velvet",
+            "nail-head trim",
+            "carved legs",
+            "tufted",
+            "Victorian",
+            "library",
+            "intimate",
+            "scholarly",
+            "old-world",
+            "jewel-toned"
+        ],
+        "vibe_description": "A deep-tufted armchair upholstered in midnight-blue velvet with aged brass nail-head trim and hand-carved walnut legs. Evokes a private Victorian library — the kind of chair you sink into with a leather-bound book and a glass of port. Rich, intimate, and unapologetically scholarly."
+    },
+    {
+        "id": 2,
+        "name": "Pemberton Carved Bookshelf",
+        "category": "bookshelf",
+        "price": 829,
+        "width_in": 36,
+        "height_in": 84,
+        "depth_in": 14,
+        "primary_vibe": "dark academia",
+        "color_palette": [
+            "dark walnut",
+            "aged brass",
+            "deep mahogany"
+        ],
+        "style_tags": [
+            "dark wood",
+            "ornate",
+            "carved",
+            "library",
+            "floor-to-ceiling",
+            "Victorian",
+            "scholarly",
+            "imposing",
+            "warm",
+            "moody"
+        ],
+        "vibe_description": "A floor-to-ceiling bookshelf in dark walnut with ornate crown molding and brass rail hardware. Instantly transforms any room into a private study. The deep mahogany finish absorbs light softly, creating that warm, moody reading-room atmosphere that feels both centuries old and perfectly curated."
+    },
+    {
+        "id": 3,
+        "name": "Elsinore Writing Desk",
+        "category": "desk",
+        "price": 975,
+        "width_in": 54,
+        "height_in": 30,
+        "depth_in": 28,
+        "primary_vibe": "dark academia",
+        "color_palette": [
+            "dark walnut",
+            "aged leather",
+            "antique brass",
+            "forest green"
+        ],
+        "style_tags": [
+            "leather top",
+            "antique hardware",
+            "Victorian",
+            "executive",
+            "moody",
+            "scholarly",
+            "writer",
+            "dramatic",
+            "rich",
+            "carved apron"
+        ],
+        "vibe_description": "A wide-topped writing desk with a forest-green leather inlay surface, antique-brass drawer pulls, and dark walnut frame with carved apron details. Built for the kind of person who writes longhand and keeps a globe on the corner. Heavy, serious, and absolutely gorgeous."
+    },
+    {
+        "id": 4,
+        "name": "Dunmore Wingback Chair",
+        "category": "chair",
+        "price": 879,
+        "width_in": 32,
+        "height_in": 46,
+        "depth_in": 34,
+        "primary_vibe": "dark academia",
+        "color_palette": [
+            "oxblood red",
+            "dark walnut",
+            "ivory piping",
+            "aged brass"
+        ],
+        "style_tags": [
+            "wingback",
+            "leather",
+            "tufted",
+            "library chair",
+            "traditional",
+            "aristocratic",
+            "reading",
+            "fireplace",
+            "old-world",
+            "statement"
+        ],
+        "vibe_description": "A high-backed wingback in oxblood full-grain leather with deep button tufting, ivory contrast piping, and dark walnut turned legs. Commanding presence — this is the chair that belongs in a wood-paneled study beside a fireplace. Aristocratic, warm, and built to last 100 years."
+    },
+    {
+        "id": 5,
+        "name": "Ravenswood Side Table",
+        "category": "side_table",
+        "price": 289,
+        "width_in": 18,
+        "height_in": 26,
+        "depth_in": 18,
+        "primary_vibe": "dark academia",
+        "color_palette": [
+            "dark walnut",
+            "aged brass",
+            "deep black"
+        ],
+        "style_tags": [
+            "drum table",
+            "carved",
+            "brass inlay",
+            "Victorian",
+            "accent",
+            "library",
+            "moody",
+            "intimate",
+            "old-world"
+        ],
+        "vibe_description": "A compact drum side table in dark walnut with hand-inlaid brass banding and a single felt-lined drawer. Small in footprint, enormous in atmosphere. The perfect perch for a reading lamp, a leather notebook, and a cup of something warm."
+    },
+    {
+        "id": 6,
+        "name": "Frigg Low-Profile Sofa",
+        "category": "sofa",
+        "price": 1299,
+        "width_in": 84,
+        "height_in": 29,
+        "depth_in": 34,
+        "primary_vibe": "scandinavian minimalist",
+        "color_palette": [
+            "light oatmeal",
+            "natural birch",
+            "soft white",
+            "warm grey"
+        ],
+        "style_tags": [
+            "linen",
+            "low arms",
+            "clean lines",
+            "birch legs",
+            "airy",
+            "minimal",
+            "calm",
+            "cozy",
+            "Scandinavian",
+            "functional",
+            "understated"
+        ],
+        "vibe_description": "A low-slung three-seater in warm oatmeal linen with slender tapered birch legs and barely-there arms. No fuss, no excess — just clean geometry and fabric that gets softer every year. The kind of sofa that makes a room feel twice as large. Calm, functional, quietly beautiful."
+    },
+    {
+        "id": 7,
+        "name": "Solveig Coffee Table",
+        "category": "coffee_table",
+        "price": 449,
+        "width_in": 48,
+        "height_in": 15,
+        "depth_in": 24,
+        "primary_vibe": "scandinavian minimalist",
+        "color_palette": [
+            "natural oak",
+            "warm white",
+            "light blonde"
+        ],
+        "style_tags": [
+            "solid oak",
+            "oval",
+            "minimalist",
+            "low",
+            "airy",
+            "functional",
+            "Scandinavian",
+            "simple",
+            "clean",
+            "light wood"
+        ],
+        "vibe_description": "An oval coffee table in solid white oak with a smooth matte surface and knife-thin profile. Proportioned to float in a room rather than anchor it — exactly right for a living space that breathes. No hardware, no decoration, just beautifully figured wood and honest joinery."
+    },
+    {
+        "id": 8,
+        "name": "Astrid Accent Chair",
+        "category": "chair",
+        "price": 499,
+        "width_in": 27,
+        "height_in": 32,
+        "depth_in": 28,
+        "primary_vibe": "scandinavian minimalist",
+        "color_palette": [
+            "cream boucle",
+            "natural oak",
+            "warm white"
+        ],
+        "style_tags": [
+            "boucle",
+            "round",
+            "bucket chair",
+            "oak legs",
+            "minimal",
+            "hygge",
+            "cozy",
+            "airy",
+            "Scandinavian",
+            "tactile",
+            "light"
+        ],
+        "vibe_description": "A round boucle bucket chair in warm cream with four delicate tapered oak legs. The boucle fabric is soft enough to run your hand across repeatedly. Somewhere between a hug and a piece of furniture — equal parts cozy and effortlessly minimal."
+    },
+    {
+        "id": 9,
+        "name": "Bjorn Bookshelf",
+        "category": "bookshelf",
+        "price": 599,
+        "width_in": 31,
+        "height_in": 72,
+        "depth_in": 12,
+        "primary_vibe": "scandinavian minimalist",
+        "color_palette": [
+            "white oak",
+            "warm white",
+            "natural grain"
+        ],
+        "style_tags": [
+            "open shelving",
+            "solid oak",
+            "minimal",
+            "airy",
+            "Scandinavian",
+            "display",
+            "light wood",
+            "clean",
+            "functional",
+            "understated"
+        ],
+        "vibe_description": "A tall open-shelving unit in solid white oak with adjustable shelves and a silhouette thin enough to disappear into the wall. The grain is pale and lively. Perfect for displaying a curated edit of books and objects without the room feeling cluttered."
+    },
+    {
+        "id": 10,
+        "name": "Sputnik Lounge Chair",
+        "category": "chair",
+        "price": 799,
+        "width_in": 28,
+        "height_in": 34,
+        "depth_in": 30,
+        "primary_vibe": "mid-century modern",
+        "color_palette": [
+            "burnt orange",
+            "walnut",
+            "cream",
+            "avocado green"
+        ],
+        "style_tags": [
+            "molded",
+            "walnut legs",
+            "retro",
+            "1960s",
+            "lounge",
+            "statement",
+            "bold",
+            "playful",
+            "iconic",
+            "vintage",
+            "architectural"
+        ],
+        "vibe_description": "A molded lounge chair with a gently curved shell in burnt orange wool and splayed solid walnut legs. Lifted straight from a 1960s design catalog — the kind of chair that makes guests ask where you got it. Bold without being loud, retro without being costumey."
+    },
+    {
+        "id": 11,
+        "name": "Helix Sofa",
+        "category": "sofa",
+        "price": 1649,
+        "width_in": 82,
+        "height_in": 31,
+        "depth_in": 35,
+        "primary_vibe": "mid-century modern",
+        "color_palette": [
+            "camel",
+            "walnut",
+            "mustard",
+            "teak"
+        ],
+        "style_tags": [
+            "button tufted",
+            "walnut legs",
+            "retro",
+            "1960s",
+            "tapered legs",
+            "camel leather",
+            "architectural",
+            "statement",
+            "vintage"
+        ],
+        "vibe_description": "A three-seat sofa in warm camel leather with deep button tufting, knife-edge pillows, and eight tapered walnut legs. Every proportion is deliberate — the low back, the wide seat, the leg detail. This is mid-century done right, not as nostalgia but as good design that never went anywhere."
+    },
+    {
+        "id": 12,
+        "name": "Orb Side Table",
+        "category": "side_table",
+        "price": 219,
+        "width_in": 18,
+        "height_in": 22,
+        "depth_in": 18,
+        "primary_vibe": "mid-century modern",
+        "color_palette": [
+            "walnut",
+            "brass",
+            "warm brown"
+        ],
+        "style_tags": [
+            "tripod legs",
+            "brass top",
+            "walnut",
+            "1960s",
+            "retro",
+            "accent",
+            "small",
+            "playful",
+            "sculptural",
+            "vintage",
+            "bold"
+        ],
+        "vibe_description": "A tripod side table with a circular brass tray top and three tapered walnut legs. A classic mid-century form — and yet somehow it is always right. Sets down a drink, holds a plant, and quietly makes every room more interesting."
+    },
+    {
+        "id": 13,
+        "name": "Walden Credenza",
+        "category": "credenza",
+        "price": 1189,
+        "width_in": 60,
+        "height_in": 30,
+        "depth_in": 18,
+        "primary_vibe": "mid-century modern",
+        "color_palette": [
+            "teak",
+            "walnut",
+            "cane",
+            "warm brown"
+        ],
+        "style_tags": [
+            "credenza",
+            "cane doors",
+            "tapered legs",
+            "teak",
+            "storage",
+            "vintage",
+            "1960s",
+            "dining room",
+            "retro",
+            "architectural",
+            "low-profile"
+        ],
+        "vibe_description": "A long low credenza in solid teak with two cane-front cabinet doors, tapered hairpin legs, and a single center drawer. It floats above the floor with visual lightness. Perfect opposite a sofa or along a dining room wall — a horizontal anchor that holds the room together."
+    },
+    {
+        "id": 14,
+        "name": "Wildflower Linen Sofa",
+        "category": "sofa",
+        "price": 1099,
+        "width_in": 80,
+        "height_in": 34,
+        "depth_in": 38,
+        "primary_vibe": "cottagecore",
+        "color_palette": [
+            "sage green",
+            "dusty rose",
+            "cream",
+            "terracotta",
+            "warm white"
+        ],
+        "style_tags": [
+            "linen",
+            "rolled arms",
+            "vintage",
+            "cottage",
+            "soft",
+            "romantic",
+            "feminine",
+            "English countryside",
+            "lived-in",
+            "gentle",
+            "slipcover"
+        ],
+        "vibe_description": "A generously cushioned sofa in sage-green slipcover linen with wide rolled arms and turned bun feet painted cream. Intentionally soft and slightly imprecise — like it has always been here. Pairs with a floral pillow, a throw, and the feeling of a Sunday with nowhere to be."
+    },
+    {
+        "id": 15,
+        "name": "Clover Wicker Accent Chair",
+        "category": "chair",
+        "price": 349,
+        "width_in": 28,
+        "height_in": 36,
+        "depth_in": 27,
+        "primary_vibe": "cottagecore",
+        "color_palette": [
+            "natural wicker",
+            "cream cushion",
+            "dusty sage",
+            "terracotta"
+        ],
+        "style_tags": [
+            "wicker",
+            "rattan",
+            "cushion",
+            "cottage",
+            "organic",
+            "natural",
+            "cozy",
+            "handwoven",
+            "botanical",
+            "gentle",
+            "vintage"
+        ],
+        "vibe_description": "A handwoven rattan accent chair with a thick cream-linen seat cushion and slightly splayed legs. Light enough to move, comfortable enough to stay in. The texture is the point — imperfect weave, warm straw color, the feel of something made by hands in a very good place."
+    },
+    {
+        "id": 16,
+        "name": "Rosehip Side Table",
+        "category": "side_table",
+        "price": 179,
+        "width_in": 16,
+        "height_in": 24,
+        "depth_in": 16,
+        "primary_vibe": "cottagecore",
+        "color_palette": [
+            "cream white",
+            "soft sage",
+            "dusty rose",
+            "antique brass"
+        ],
+        "style_tags": [
+            "painted",
+            "scalloped edge",
+            "vintage",
+            "cottage",
+            "feminine",
+            "antique",
+            "bedside",
+            "accent",
+            "gentle",
+            "botanical",
+            "romantic"
+        ],
+        "vibe_description": "A small side table with a scalloped apron, turned legs, and an antique-cream painted finish with gentle distressing at the edges. The kind of table that holds a bud vase, a half-finished candle, and a library book. Quiet, sweet, and completely of its world."
+    },
+    {
+        "id": 17,
+        "name": "Ironworks Dining Table",
+        "category": "dining_table",
+        "price": 1349,
+        "width_in": 72,
+        "height_in": 30,
+        "depth_in": 36,
+        "primary_vibe": "industrial",
+        "color_palette": [
+            "reclaimed wood",
+            "matte black",
+            "dark steel",
+            "warm brown"
+        ],
+        "style_tags": [
+            "steel frame",
+            "reclaimed wood",
+            "pipe",
+            "industrial",
+            "loft",
+            "raw",
+            "urban",
+            "bold",
+            "sturdy",
+            "masculine",
+            "moody"
+        ],
+        "vibe_description": "A dining table built on a welded matte-black steel frame with a thick reclaimed Douglas fir top — two inches of solid, knot-filled, character-rich wood. Heavy, unmovable. The kind of table that gets scarred gracefully over years of dinner parties. Built for a loft or anyone who respects craft."
+    },
+    {
+        "id": 18,
+        "name": "Pipe Bookshelf",
+        "category": "bookshelf",
+        "price": 549,
+        "width_in": 42,
+        "height_in": 72,
+        "depth_in": 10,
+        "primary_vibe": "industrial",
+        "color_palette": [
+            "reclaimed pine",
+            "matte black",
+            "raw steel",
+            "gunmetal"
+        ],
+        "style_tags": [
+            "pipe shelf",
+            "steel",
+            "reclaimed wood",
+            "industrial",
+            "loft",
+            "open shelving",
+            "urban",
+            "raw",
+            "bold",
+            "exposed hardware"
+        ],
+        "vibe_description": "Six-tier open shelving built on galvanized pipe brackets with reclaimed pine planks. Nothing is hidden — every bolt, every weld, every knot in the wood is the point. Perfect for a loft, a home office, or any space that values honesty over polish."
+    },
+    {
+        "id": 19,
+        "name": "Gridiron Coffee Table",
+        "category": "coffee_table",
+        "price": 699,
+        "width_in": 54,
+        "height_in": 18,
+        "depth_in": 28,
+        "primary_vibe": "industrial",
+        "color_palette": [
+            "matte black steel",
+            "smoked glass",
+            "dark charcoal"
+        ],
+        "style_tags": [
+            "steel frame",
+            "glass top",
+            "welded",
+            "industrial",
+            "loft",
+            "urban",
+            "angular",
+            "bold",
+            "raw",
+            "masculine",
+            "heavy"
+        ],
+        "vibe_description": "A welded steel coffee table with a flat matte-black frame and a thick smoked-glass top. Angular and uncompromising. Sits low in a living room and anchors the whole space with visual weight. No warmth is attempted and none is needed — this one earns its place through sheer presence."
+    },
+    {
+        "id": 20,
+        "name": "Marrakech Pouf Ottoman",
+        "category": "ottoman",
+        "price": 189,
+        "width_in": 20,
+        "height_in": 14,
+        "depth_in": 20,
+        "primary_vibe": "bohemian",
+        "color_palette": [
+            "burnt sienna",
+            "saffron",
+            "turquoise",
+            "indigo",
+            "gold"
+        ],
+        "style_tags": [
+            "leather pouf",
+            "embossed",
+            "handmade",
+            "Moroccan",
+            "boho",
+            "layered",
+            "colorful",
+            "eclectic",
+            "global",
+            "floor seating",
+            "tactile"
+        ],
+        "vibe_description": "A hand-embossed leather pouf in burnt sienna with saffron medallion stitching. Stuffed firm, sewn by hand. It hits a floor and immediately starts a conversation. Layer three of them, pair with a kilim rug, and the room is somewhere else entirely."
+    },
+    {
+        "id": 21,
+        "name": "Casbah Woven Side Table",
+        "category": "side_table",
+        "price": 259,
+        "width_in": 20,
+        "height_in": 22,
+        "depth_in": 20,
+        "primary_vibe": "bohemian",
+        "color_palette": [
+            "natural jute",
+            "terracotta",
+            "gold",
+            "ivory"
+        ],
+        "style_tags": [
+            "woven",
+            "jute",
+            "rattan",
+            "Moroccan",
+            "boho",
+            "eclectic",
+            "global",
+            "handmade",
+            "textured",
+            "earthy",
+            "layered",
+            "organic"
+        ],
+        "vibe_description": "A barrel-shaped side table hand-woven in natural jute with gold and terracotta geometric banding. The weave is tactile and slightly irregular — proof it was made by a person. A small but essential piece in any layered, global-inspired space."
+    },
+    {
+        "id": 22,
+        "name": "Tangier Floor Cushion Sofa",
+        "category": "sofa",
+        "price": 889,
+        "width_in": 90,
+        "height_in": 16,
+        "depth_in": 40,
+        "primary_vibe": "bohemian",
+        "color_palette": [
+            "saffron",
+            "indigo",
+            "emerald",
+            "terracotta",
+            "deep red"
+        ],
+        "style_tags": [
+            "floor seating",
+            "cushion",
+            "Moroccan",
+            "boho",
+            "low",
+            "colorful",
+            "eclectic",
+            "global",
+            "maximalist",
+            "patterned",
+            "layered",
+            "communal"
+        ],
+        "vibe_description": "A modular floor-level sofa built from three oversized cushion units in mixed jewel-toned Moroccan-weave fabric — saffron, indigo, and deep red. Arrange it in an L, a U, or a loose pile. The vibe is communal, opulent, and 100% intentional maximalism."
+    },
+    {
+        "id": 23,
+        "name": "Mu Platform Bed Frame",
+        "category": "bed_frame",
+        "price": 1099,
+        "width_in": 64,
+        "height_in": 10,
+        "depth_in": 85,
+        "primary_vibe": "japandi",
+        "color_palette": [
+            "ash wood",
+            "warm grey",
+            "natural linen",
+            "fog white"
+        ],
+        "style_tags": [
+            "platform",
+            "low profile",
+            "solid ash",
+            "Japandi",
+            "zen",
+            "minimalist",
+            "Japanese",
+            "Scandinavian",
+            "calm",
+            "grounded",
+            "intentional",
+            "serene"
+        ],
+        "vibe_description": "A floor-hugging platform bed in solid ash wood with a barely-there headboard and edge detail so fine it nearly disappears. Sleeping low to the ground changes the geometry of the whole room — more space, more calm, more intention. Japandi at its most resolved."
+    },
+    {
+        "id": 24,
+        "name": "Sabi Coffee Table",
+        "category": "coffee_table",
+        "price": 589,
+        "width_in": 44,
+        "height_in": 13,
+        "depth_in": 22,
+        "primary_vibe": "japandi",
+        "color_palette": [
+            "black walnut",
+            "warm dark",
+            "natural grain",
+            "matte black"
+        ],
+        "style_tags": [
+            "solid walnut",
+            "low",
+            "asymmetric",
+            "Japandi",
+            "zen",
+            "wabi-sabi",
+            "Japanese",
+            "minimalist",
+            "sculptural",
+            "grounded",
+            "handcrafted"
+        ],
+        "vibe_description": "An asymmetric coffee table in solid black walnut with hand-planed surfaces and slightly mismatched leg heights — a deliberate nod to wabi-sabi, the acceptance of imperfection. The grain does all the work. Simple, grounded, and quietly extraordinary."
+    },
+    {
+        "id": 25,
+        "name": "Ma Side Table",
+        "category": "side_table",
+        "price": 199,
+        "width_in": 14,
+        "height_in": 20,
+        "depth_in": 14,
+        "primary_vibe": "japandi",
+        "color_palette": [
+            "white oak",
+            "warm white",
+            "soft grey",
+            "natural grain"
+        ],
+        "style_tags": [
+            "solid oak",
+            "single shelf",
+            "Japandi",
+            "zen",
+            "minimal",
+            "Japanese",
+            "Scandinavian",
+            "light",
+            "open",
+            "intentional",
+            "serene",
+            "airy"
+        ],
+        "vibe_description": "A small side table in white oak — one surface, one shelf, four legs. Named after the Japanese concept of negative space. The empty shelf is not a problem; it is the point. Everything about this table is a deliberate removal of everything unnecessary."
+    },
+    {
+        "id": 26,
+        "name": "Dune Linen Sofa",
+        "category": "sofa",
+        "price": 1199,
+        "width_in": 88,
+        "height_in": 33,
+        "depth_in": 38,
+        "primary_vibe": "coastal",
+        "color_palette": [
+            "sandy beige",
+            "ocean blue",
+            "driftwood",
+            "soft white",
+            "sea glass"
+        ],
+        "style_tags": [
+            "linen",
+            "slipcovered",
+            "beach house",
+            "coastal",
+            "airy",
+            "light",
+            "relaxed",
+            "sun-bleached",
+            "nautical",
+            "breezy",
+            "casual",
+            "summer"
+        ],
+        "vibe_description": "A deep slipcovered sofa in washed sandy-beige linen with wide track arms and chunky turned legs in driftwood-grey. Looks like it has been in a beach house for twenty summers. Washable, forgiving, infinitely comfortable. The sofa that says: shoes off, nowhere to be."
+    },
+    {
+        "id": 27,
+        "name": "Tideline Coffee Table",
+        "category": "coffee_table",
+        "price": 399,
+        "width_in": 50,
+        "height_in": 17,
+        "depth_in": 26,
+        "primary_vibe": "coastal",
+        "color_palette": [
+            "driftwood",
+            "whitewash",
+            "sandy blonde",
+            "warm grey"
+        ],
+        "style_tags": [
+            "driftwood",
+            "whitewash",
+            "beach house",
+            "coastal",
+            "relaxed",
+            "light",
+            "summer",
+            "nautical",
+            "natural",
+            "airy",
+            "casual",
+            "organic"
+        ],
+        "vibe_description": "A rectangular coffee table built in driftwood-finished solid pine with a lightly whitewashed top that lets the grain show through. Not precious, not fragile. Put your sandy feet on it. Set down a wet glass. It only gets better. Relaxed, beachy, completely at ease."
+    },
+    {
+        "id": 28,
+        "name": "Coral Rattan Chair",
+        "category": "chair",
+        "price": 429,
+        "width_in": 30,
+        "height_in": 34,
+        "depth_in": 28,
+        "primary_vibe": "coastal",
+        "color_palette": [
+            "natural rattan",
+            "cream",
+            "sea glass green",
+            "warm white"
+        ],
+        "style_tags": [
+            "rattan",
+            "woven",
+            "cushion",
+            "coastal",
+            "beach",
+            "relaxed",
+            "tropical",
+            "breezy",
+            "natural",
+            "organic",
+            "light",
+            "casual"
+        ],
+        "vibe_description": "A large-frame rattan chair with a gently arched back, open weave sides, and a thick sea-glass-green cushion. The kind of chair that belongs on a screened porch with a view of the water, but works just as well in a living room that aspires to that feeling."
+    },
+    {
+        "id": 29,
+        "name": "Gatsby Velvet Sofa",
+        "category": "sofa",
+        "price": 1899,
+        "width_in": 78,
+        "height_in": 35,
+        "depth_in": 36,
+        "primary_vibe": "art deco",
+        "color_palette": [
+            "emerald green",
+            "gold",
+            "black lacquer",
+            "ivory",
+            "deep teal"
+        ],
+        "style_tags": [
+            "velvet",
+            "gold trim",
+            "art deco",
+            "geometric",
+            "glamorous",
+            "luxe",
+            "1920s",
+            "statement",
+            "Hollywood Regency",
+            "lacquered legs",
+            "fan back"
+        ],
+        "vibe_description": "A fan-backed sofa in deep emerald velvet with gold nail-head trim along the curved frame, lacquered black legs with gold feet, and two geometric bolster pillows. Dramatic, symmetrical, unabashedly glamorous. This sofa does not blend in — it becomes the room."
+    },
+    {
+        "id": 30,
+        "name": "Odeon Side Table",
+        "category": "side_table",
+        "price": 389,
+        "width_in": 18,
+        "height_in": 28,
+        "depth_in": 18,
+        "primary_vibe": "art deco",
+        "color_palette": [
+            "gold",
+            "black lacquer",
+            "ivory marble",
+            "warm brass"
+        ],
+        "style_tags": [
+            "marble top",
+            "brass",
+            "geometric",
+            "lacquered",
+            "art deco",
+            "glamorous",
+            "statement",
+            "gold",
+            "1920s",
+            "Hollywood Regency",
+            "luxe",
+            "angular"
+        ],
+        "vibe_description": "A three-tiered side table in lacquered black with a circular Carrara marble top and brass geometric cross-base. Each tier is a perfect circle stepped in size — pure deco geometry. Somewhere between a sculpture and a functional surface."
+    }
+]
