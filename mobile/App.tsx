@@ -406,7 +406,7 @@ export default function App() {
         
         {/* Main Header */}
         <View style={styles.header}>
-          <Text style={styles.logo}>Wayfair</Text>
+          <Text style={styles.logo}>Roomscape</Text>
           <Text style={styles.subtitle}>Aesthetic Matchmaker</Text>
         </View>
 

@@ -1,9 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 import agent
 
 app = FastAPI(title="Wayfair Aesthetic Matchmaker API")
+
+app.mount("/images", StaticFiles(directory="images"), name="images")
 
 # Allow all origins for local dev — Expo Go needs this
 app.add_middleware(
