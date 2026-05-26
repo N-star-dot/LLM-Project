@@ -11,7 +11,7 @@ load_dotenv()
 API_KEY = "sky_DuHWYcES.j7Ge2XITqc89IbsYBPRKMNoOZpJano02"
 # Defaulting to an OpenAI-compatible endpoint, assuming openrouter if slash is present, or subconcious
 # Note: we'll try to just pass it; if the user's environment is set up for it, they might have OPENAI_BASE_URL set.
-BASE_URL = os.environ.get("OPENAI_BASE_URL", "https://api.subconscious.ai/v1")
+BASE_URL = os.environ.get("OPENAI_BASE_URL", "https://api.subconscious.dev/v1")
 
 try:
     client = OpenAI(api_key=API_KEY, base_url=BASE_URL)

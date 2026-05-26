@@ -17,15 +17,21 @@ app.add_middleware(
 
 class SearchRequest(BaseModel):
     query: str
-
+    chat_history: list[dict] | None = None
 
 class Product(BaseModel):
-    id: str
+    id: int
     name: str
     category: str
     price: float
-    image_url: str
-    aesthetic_description: str
+    width_in: float | None = None
+    height_in: float | None = None
+    depth_in: float | None = None
+    primary_vibe: str | None = None
+    color_palette: str | None = None
+    style_tags: str | None = None
+    vibe_description: str | None = None
+    image_url: str | None = None
 
 
 class SearchResponse(BaseModel):
@@ -36,7 +42,7 @@ class SearchResponse(BaseModel):
 
 @app.post("/search", response_model=SearchResponse)
 def search(req: SearchRequest):
-    message, products, fallback = agent.ask_agent(req.query)
+    message, products, fallback = agent.ask_agent(req.query, chat_history=req.chat_history)
     return SearchResponse(
         message=message,
         products=products,

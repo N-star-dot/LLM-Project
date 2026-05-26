@@ -9,7 +9,7 @@ load_dotenv()
 
 # Use the provided Subconscious API Key
 API_KEY = "sky_DuHWYcES.j7Ge2XITqc89IbsYBPRKMNoOZpJano02"
-BASE_URL = os.environ.get("OPENAI_BASE_URL", "https://api.subconscious.ai/v1")
+BASE_URL = os.environ.get("OPENAI_BASE_URL", "https://api.subconscious.dev/v1")
 
 # Resolve DB path relative to this file
 DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'wayfair_catalog.db')
@@ -73,11 +73,11 @@ def ask_agent(user_input, chat_history=None):
     """
     system_prompt = """You are the Wayfair Aesthetic Matchmaker, an elite interior design AI.
 The user will give you a "vibe", "aesthetic", or a messy description of their dream room.
-Your job is to translate their emotional description into 3-5 concrete search keywords that exist in our furniture catalog (e.g., 'velvet', 'industrial', 'walnut', 'boho', 'matte black').
-
-You have access to the 'query_local_data' tool. 
-Write a SQLite query using the keywords to search the 'aesthetic_description' column of the 'products' table using LIKE clauses.
-Example: SELECT * FROM products WHERE aesthetic_description LIKE '%velvet%' OR aesthetic_description LIKE '%dark wood%' LIMIT 9;
+Your job is to translate their emotional description into concrete search keywords that exist in our furniture catalog.
+The 'products' table has these text columns you can search: primary_vibe, color_palette, style_tags, vibe_description.
+You have access to the 'query_local_data' tool.
+Write a SQLite query using the keywords to search these columns using LIKE clauses.
+Example: SELECT * FROM products WHERE style_tags LIKE '%velvet%' OR primary_vibe LIKE '%dark%' LIMIT 9;
 
 OUTPUT FORMAT:
 You MUST output ONLY a valid JSON object.
