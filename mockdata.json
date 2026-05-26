@@ -312,7 +312,8 @@
             "statement",
             "vintage"
         ],
-        "vibe_description": "A three-seat sofa in warm camel leather with deep button tufting, knife-edge pillows, and eight tapered walnut legs. Every proportion is deliberate — the low back, the wide seat, the leg detail. This is mid-century done right, not as nostalgia but as good design that never went anywhere."
+        "vibe_description": "A three-seat sofa in warm camel leather with deep button tufting, knife-edge pillows, and eight tapered walnut legs. Every proportion is deliberate — the low back, the wide seat, the leg detail. This is mid-century done right, not as nostalgia but as good design that never went anywhere.",
+        "image_url": "./images/product_11.png"
     },
     {
         "id": 12,
@@ -341,7 +342,8 @@
             "vintage",
             "bold"
         ],
-        "vibe_description": "A tripod side table with a circular brass tray top and three tapered walnut legs. A classic mid-century form — and yet somehow it is always right. Sets down a drink, holds a plant, and quietly makes every room more interesting."
+        "vibe_description": "A tripod side table with a circular brass tray top and three tapered walnut legs. A classic mid-century form — and yet somehow it is always right. Sets down a drink, holds a plant, and quietly makes every room more interesting.",
+        "image_url": "./images/product_12.png"
     },
     {
         "id": 13,
@@ -371,7 +373,8 @@
             "architectural",
             "low-profile"
         ],
-        "vibe_description": "A long low credenza in solid teak with two cane-front cabinet doors, tapered hairpin legs, and a single center drawer. It floats above the floor with visual lightness. Perfect opposite a sofa or along a dining room wall — a horizontal anchor that holds the room together."
+        "vibe_description": "A long low credenza in solid teak with two cane-front cabinet doors, tapered hairpin legs, and a single center drawer. It floats above the floor with visual lightness. Perfect opposite a sofa or along a dining room wall — a horizontal anchor that holds the room together.",
+        "image_url": "./images/product_13.png"
     },
     {
         "id": 14,
@@ -402,7 +405,8 @@
             "gentle",
             "slipcover"
         ],
-        "vibe_description": "A generously cushioned sofa in sage-green slipcover linen with wide rolled arms and turned bun feet painted cream. Intentionally soft and slightly imprecise — like it has always been here. Pairs with a floral pillow, a throw, and the feeling of a Sunday with nowhere to be."
+        "vibe_description": "A generously cushioned sofa in sage-green slipcover linen with wide rolled arms and turned bun feet painted cream. Intentionally soft and slightly imprecise — like it has always been here. Pairs with a floral pillow, a throw, and the feeling of a Sunday with nowhere to be.",
+        "image_url": "./images/product_14.png"
     },
     {
         "id": 15,
@@ -432,7 +436,8 @@
             "gentle",
             "vintage"
         ],
-        "vibe_description": "A handwoven rattan accent chair with a thick cream-linen seat cushion and slightly splayed legs. Light enough to move, comfortable enough to stay in. The texture is the point — imperfect weave, warm straw color, the feel of something made by hands in a very good place."
+        "vibe_description": "A handwoven rattan accent chair with a thick cream-linen seat cushion and slightly splayed legs. Light enough to move, comfortable enough to stay in. The texture is the point — imperfect weave, warm straw color, the feel of something made by hands in a very good place.",
+        "image_url": "./images/product_15.png"
     },
     {
         "id": 16,
@@ -462,7 +467,8 @@
             "botanical",
             "romantic"
         ],
-        "vibe_description": "A small side table with a scalloped apron, turned legs, and an antique-cream painted finish with gentle distressing at the edges. The kind of table that holds a bud vase, a half-finished candle, and a library book. Quiet, sweet, and completely of its world."
+        "vibe_description": "A small side table with a scalloped apron, turned legs, and an antique-cream painted finish with gentle distressing at the edges. The kind of table that holds a bud vase, a half-finished candle, and a library book. Quiet, sweet, and completely of its world.",
+        "image_url": "./images/product_16.png"
     },
     {
         "id": 17,
@@ -492,7 +498,8 @@
             "masculine",
             "moody"
         ],
-        "vibe_description": "A dining table built on a welded matte-black steel frame with a thick reclaimed Douglas fir top — two inches of solid, knot-filled, character-rich wood. Heavy, unmovable. The kind of table that gets scarred gracefully over years of dinner parties. Built for a loft or anyone who respects craft."
+        "vibe_description": "A dining table built on a welded matte-black steel frame with a thick reclaimed Douglas fir top — two inches of solid, knot-filled, character-rich wood. Heavy, unmovable. The kind of table that gets scarred gracefully over years of dinner parties. Built for a loft or anyone who respects craft.",
+        "image_url": "./images/product_17.png"
     },
     {
         "id": 18,
@@ -521,7 +528,8 @@
             "bold",
             "exposed hardware"
         ],
-        "vibe_description": "Six-tier open shelving built on galvanized pipe brackets with reclaimed pine planks. Nothing is hidden — every bolt, every weld, every knot in the wood is the point. Perfect for a loft, a home office, or any space that values honesty over polish."
+        "vibe_description": "Six-tier open shelving built on galvanized pipe brackets with reclaimed pine planks. Nothing is hidden — every bolt, every weld, every knot in the wood is the point. Perfect for a loft, a home office, or any space that values honesty over polish.",
+        "image_url": "./images/product_18.png"
     },
     {
         "id": 19,
@@ -550,7 +558,8 @@
             "masculine",
             "heavy"
         ],
-        "vibe_description": "A welded steel coffee table with a flat matte-black frame and a thick smoked-glass top. Angular and uncompromising. Sits low in a living room and anchors the whole space with visual weight. No warmth is attempted and none is needed — this one earns its place through sheer presence."
+        "vibe_description": "A welded steel coffee table with a flat matte-black frame and a thick smoked-glass top. Angular and uncompromising. Sits low in a living room and anchors the whole space with visual weight. No warmth is attempted and none is needed — this one earns its place through sheer presence.",
+        "image_url": "./images/product_19.png"
     },
     {
         "id": 20,
@@ -581,7 +590,8 @@
             "floor seating",
             "tactile"
         ],
-        "vibe_description": "A hand-embossed leather pouf in burnt sienna with saffron medallion stitching. Stuffed firm, sewn by hand. It hits a floor and immediately starts a conversation. Layer three of them, pair with a kilim rug, and the room is somewhere else entirely."
+        "vibe_description": "A hand-embossed leather pouf in burnt sienna with saffron medallion stitching. Stuffed firm, sewn by hand. It hits a floor and immediately starts a conversation. Layer three of them, pair with a kilim rug, and the room is somewhere else entirely.",
+        "image_url": "./images/product_20.png"
     },
     {
         "id": 21,
