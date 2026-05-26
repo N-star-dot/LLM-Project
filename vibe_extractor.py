@@ -1,22 +1,25 @@
 """
 VLM Vibe Extractor — Streamlit Demo Page
 =========================================
-Upload a product image → watch the agent extract the vibe live.
+Two modes:
+  1. MANUAL: Upload a single product image → extract vibe
+  2. AGENT:  Point at a folder → agent crawls & processes ALL images autonomously
 """
 
 import streamlit as st
 import base64
 import json
+import os
 import vlm_agent
+import vibe_agent
 
-st.set_page_config(page_title="Vibe Extractor | Asteralyze*", page_icon="✦", layout="wide")
+st.set_page_config(page_title="Vibe Agent | Asteralyze*", page_icon="✦", layout="wide")
 
 # --- Premium Dark Theme ---
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
-/* Base */
 html, body, [data-testid="stAppViewContainer"] {
     font-family: 'Inter', sans-serif;
     background: #0a0a0f;
@@ -27,9 +30,15 @@ html, body, [data-testid="stAppViewContainer"] {
     background-attachment: fixed;
 }
 [data-testid="stHeader"] { background: transparent; }
-[data-testid="stSidebar"] { display: none; }
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #0a0a0f 0%, #12121f 100%) !important;
+    border-right: 1px solid rgba(167, 139, 250, 0.1) !important;
+}
+[data-testid="stSidebar"] p, [data-testid="stSidebar"] label,
+[data-testid="stSidebar"] div[data-testid="stMarkdownContainer"] > p {
+    color: #b0b0c0 !important;
+}
 
-/* Typography */
 h1, h2, h3 {
     font-family: 'Space Grotesk', sans-serif !important;
     color: #ffffff !important;
@@ -40,14 +49,10 @@ p, label, .stMarkdown, [data-testid="stMarkdownContainer"] > p {
     font-family: 'Inter', sans-serif !important;
 }
 
-/* Accent colors */
-.vibe-accent { color: #a78bfa; }
-.vibe-accent-warm { color: #f59e0b; }
-
-/* Hero wordmark */
+/* Hero */
 .vibe-hero {
     text-align: center;
-    padding: 2rem 0 1rem 0;
+    padding: 1.5rem 0 1rem 0;
 }
 .vibe-hero h1 {
     font-family: 'Space Grotesk', sans-serif !important;
@@ -56,10 +61,10 @@ p, label, .stMarkdown, [data-testid="stMarkdownContainer"] > p {
     background: linear-gradient(135deg, #a78bfa 0%, #818cf8 40%, #f59e0b 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.3rem;
 }
 .vibe-hero p {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     color: #6b6b80 !important;
     font-weight: 300;
 }
@@ -68,7 +73,7 @@ p, label, .stMarkdown, [data-testid="stMarkdownContainer"] > p {
 [data-testid="stFileUploader"] {
     border: 2px dashed rgba(167, 139, 250, 0.25) !important;
     border-radius: 16px !important;
-    padding: 2rem !important;
+    padding: 1.5rem !important;
     background: rgba(167, 139, 250, 0.04) !important;
     transition: all 0.3s ease;
 }
@@ -85,113 +90,106 @@ p, label, .stMarkdown, [data-testid="stMarkdownContainer"] > p {
     border-radius: 12px !important;
     font-family: 'Inter', sans-serif !important;
     font-weight: 600 !important;
-    padding: 0.75rem 2rem !important;
-    font-size: 1rem !important;
-    letter-spacing: 0.02em !important;
+    padding: 0.7rem 1.5rem !important;
+    font-size: 0.95rem !important;
     transition: all 0.3s ease !important;
-    box-shadow: 0 4px 20px rgba(124, 58, 237, 0.3) !important;
+    box-shadow: 0 4px 20px rgba(124, 58, 237, 0.25) !important;
 }
 .stButton > button:hover {
     transform: translateY(-2px) !important;
-    box-shadow: 0 8px 30px rgba(124, 58, 237, 0.5) !important;
+    box-shadow: 0 8px 30px rgba(124, 58, 237, 0.4) !important;
 }
 
-/* Chat/response messages */
-[data-testid="stChatMessage"] {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(167, 139, 250, 0.1);
-    border-radius: 16px;
-    padding: 20px 24px;
-    backdrop-filter: blur(10px);
+/* Tabs */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 8px;
+    background: transparent;
+}
+.stTabs [data-baseweb="tab"] {
+    background: rgba(167, 139, 250, 0.06);
+    border: 1px solid rgba(167, 139, 250, 0.15);
+    border-radius: 10px;
+    color: #b0b0c0 !important;
+    font-family: 'Space Grotesk', sans-serif !important;
+    font-weight: 500;
+    padding: 8px 20px;
+}
+.stTabs [aria-selected="true"] {
+    background: rgba(167, 139, 250, 0.15) !important;
+    border-color: rgba(167, 139, 250, 0.4) !important;
+    color: #a78bfa !important;
+}
+.stTabs [data-baseweb="tab-highlight"] {
+    background-color: #a78bfa !important;
 }
 
 /* Expander */
 [data-testid="stExpander"] {
     background: rgba(255,255,255,0.02);
-    border: 1px solid rgba(167, 139, 250, 0.12);
+    border: 1px solid rgba(167, 139, 250, 0.1);
     border-radius: 12px;
 }
 
-/* Code blocks */
 pre {
     background: rgba(0,0,0,0.4) !important;
-    border: 1px solid rgba(167, 139, 250, 0.15) !important;
+    border: 1px solid rgba(167, 139, 250, 0.12) !important;
     border-radius: 12px !important;
 }
 
-/* Result card */
-.result-card {
-    background: linear-gradient(135deg, rgba(167, 139, 250, 0.06), rgba(245, 158, 11, 0.04));
-    border: 1px solid rgba(167, 139, 250, 0.15);
-    border-radius: 16px;
-    padding: 24px;
-    margin: 16px 0;
+/* Agent status card */
+.agent-status {
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.08), rgba(99, 102, 241, 0.05));
+    border: 1px solid rgba(167, 139, 250, 0.2);
+    border-radius: 14px;
+    padding: 18px 22px;
+    margin: 12px 0;
 }
-.result-card h3 {
-    margin: 0 0 8px 0;
-    font-size: 1.3rem;
-}
-.result-vibe-badge {
-    display: inline-block;
-    padding: 4px 14px;
-    border-radius: 20px;
-    font-size: 0.82rem;
-    font-weight: 600;
-    background: rgba(167, 139, 250, 0.15);
-    color: #a78bfa;
-    border: 1px solid rgba(167, 139, 250, 0.3);
-    letter-spacing: 0.05em;
+.agent-status h4 {
+    color: #a78bfa !important;
+    font-family: 'Space Grotesk', sans-serif !important;
+    margin: 0 0 6px 0;
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-}
-.confidence-bar {
-    height: 6px;
-    border-radius: 3px;
-    background: rgba(255,255,255,0.08);
-    margin: 8px 0;
-    overflow: hidden;
-}
-.confidence-fill {
-    height: 100%;
-    border-radius: 3px;
-    background: linear-gradient(90deg, #7c3aed, #a78bfa);
-    transition: width 1s ease;
-}
-.color-dot {
-    display: inline-block;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    margin-right: 6px;
-    border: 1px solid rgba(255,255,255,0.15);
-    vertical-align: middle;
-}
-.tag-chip {
-    display: inline-block;
-    padding: 3px 10px;
-    margin: 2px;
-    border-radius: 12px;
-    font-size: 0.78rem;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
-    color: #b0b0c0;
 }
 
 /* Ambient glow */
 .ambient-glow {
     position: fixed;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
     background: radial-gradient(ellipse at 30% 20%, rgba(124, 58, 237, 0.04) 0%, transparent 50%),
                 radial-gradient(ellipse at 70% 80%, rgba(245, 158, 11, 0.03) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: -1;
+    pointer-events: none; z-index: -1;
     animation: glow-drift 15s ease-in-out infinite alternate;
 }
 @keyframes glow-drift {
     0% { transform: translate(0, 0); }
     100% { transform: translate(-5%, 3%); }
+}
+
+/* Metric cards */
+[data-testid="stMetric"] {
+    background: rgba(167, 139, 250, 0.06);
+    border: 1px solid rgba(167, 139, 250, 0.12);
+    border-radius: 12px;
+    padding: 12px 16px;
+}
+[data-testid="stMetricValue"] {
+    color: #a78bfa !important;
+    font-family: 'Space Grotesk', sans-serif !important;
+}
+[data-testid="stMetricLabel"] {
+    color: #6b6b80 !important;
+}
+
+/* Text input */
+.stTextInput > div > div > input {
+    background: rgba(255,255,255,0.04) !important;
+    border: 1px solid rgba(167, 139, 250, 0.2) !important;
+    border-radius: 10px !important;
+    color: #e8e8ed !important;
+    font-family: 'Inter', sans-serif !important;
 }
 </style>
 
@@ -201,75 +199,138 @@ pre {
 # --- Hero ---
 st.markdown("""
 <div class="vibe-hero">
-    <h1>✦ Vibe Extractor</h1>
-    <p>Upload a product image. The VLM agent extracts the aesthetic DNA.</p>
+    <h1>✦ Vibe Agent</h1>
+    <p>Autonomous VLM pipeline — crawls, extracts, reasons, saves. No human needed.</p>
 </div>
 """, unsafe_allow_html=True)
 
-# --- Layout ---
-col_upload, col_result = st.columns([1, 1], gap="large")
+# --- Two Modes ---
+tab_agent, tab_manual = st.tabs(["🤖 Autonomous Agent", "🔍 Single Image"])
 
-with col_upload:
-    st.markdown("### 📸 Upload Product Image")
-    
-    uploaded_file = st.file_uploader(
-        "Drop a product image",
-        type=["png", "jpg", "jpeg", "webp"],
-        label_visibility="collapsed"
-    )
-    
-    if uploaded_file:
-        img_bytes = uploaded_file.read()
-        st.image(img_bytes, caption=uploaded_file.name, use_container_width=True)
-        
-        # Encode
-        img_b64 = base64.b64encode(img_bytes).decode("utf-8")
-        mime = uploaded_file.type or "image/jpeg"
-        
-        col_extract, col_save = st.columns(2)
-        with col_extract:
-            extract_btn = st.button("🔍 Extract Vibe", use_container_width=True, key="extract")
-        with col_save:
-            save_btn = st.button("💾 Extract & Save to Catalog", use_container_width=True, key="save")
-        
-        if extract_btn or save_btn:
-            with col_result:
-                st.markdown("### 🧠 Agent Pipeline")
-                
-                # Stream the extraction live
-                result_placeholder = st.empty()
-                full_output = ""
-                
-                for chunk in vlm_agent.stream_vibe_extraction(img_b64, mime):
-                    full_output += chunk
-                    result_placeholder.markdown(full_output)
-                
-                # If save requested, also persist
-                if save_btn:
-                    st.markdown("---")
-                    with st.spinner("Saving to catalog..."):
-                        saved = vlm_agent.ingest_and_save(img_b64, mime)
-                        if saved and "error" not in saved:
-                            st.success(f"✅ Saved as **{saved.get('name')}** (ID: {saved.get('id')}) to mockdata.json!")
-                            st.balloons()
-                        else:
-                            st.error(f"Failed to save: {saved}")
+# ============================
+# TAB 1: AUTONOMOUS AGENT
+# ============================
+with tab_agent:
+    st.markdown("### Point the agent at a folder of product images")
+    st.caption("The agent will autonomously crawl every image, extract vibes via VLM, reason about overlaps and confidence, and save everything to the catalog.")
 
-# --- Show current catalog stats ---
+    col_config, col_status = st.columns([1, 1], gap="large")
+
+    with col_config:
+        folder_path = st.text_input(
+            "📂 Product images folder",
+            value="",
+            placeholder="D:\\path\\to\\product_images",
+            help="Path to a folder containing product photos (JPG, PNG, WebP)"
+        )
+
+        # Also support uploading multiple files directly
+        st.markdown("**— or upload images directly —**")
+        uploaded_files = st.file_uploader(
+            "Drop product images here",
+            type=["png", "jpg", "jpeg", "webp"],
+            accept_multiple_files=True,
+            label_visibility="collapsed",
+            key="agent_uploader"
+        )
+
+        run_agent = st.button("🚀 Run Autonomous Agent", use_container_width=True, key="run_agent")
+
+    with col_status:
+        catalog = vlm_agent.load_catalog()
+        vibe_counts = {}
+        for item in catalog:
+            v = item.get("primary_vibe", "unknown")
+            vibe_counts[v] = vibe_counts.get(v, 0) + 1
+
+        st.markdown("""<div class="agent-status"><h4>Current Catalog</h4></div>""", unsafe_allow_html=True)
+        st.metric("Total Products", len(catalog))
+
+        # Show vibe distribution
+        if vibe_counts:
+            top_vibes = sorted(vibe_counts.items(), key=lambda x: -x[1])[:4]
+            vibe_cols = st.columns(len(top_vibes))
+            for j, (vibe, count) in enumerate(top_vibes):
+                with vibe_cols[j]:
+                    st.metric(vibe.title(), count)
+
+    # --- Run the agent ---
+    if run_agent:
+        if uploaded_files:
+            # Save uploaded files to a temp folder inside the project
+            temp_folder = os.path.join(os.path.dirname(__file__), "_agent_inbox")
+            os.makedirs(temp_folder, exist_ok=True)
+
+            for uf in uploaded_files:
+                with open(os.path.join(temp_folder, uf.name), "wb") as f:
+                    f.write(uf.getbuffer())
+
+            st.markdown("---")
+            st.write_stream(vibe_agent.stream_agent_run(temp_folder))
+
+        elif folder_path and os.path.isdir(folder_path):
+            st.markdown("---")
+            st.write_stream(vibe_agent.stream_agent_run(folder_path))
+
+        else:
+            st.error("Please provide a valid folder path or upload images.")
+
+
+# ============================
+# TAB 2: SINGLE IMAGE (Manual)
+# ============================
+with tab_manual:
+    col_upload, col_result = st.columns([1, 1], gap="large")
+
+    with col_upload:
+        st.markdown("### 📸 Upload Single Product Image")
+
+        uploaded_file = st.file_uploader(
+            "Drop a product image",
+            type=["png", "jpg", "jpeg", "webp"],
+            label_visibility="collapsed",
+            key="manual_uploader"
+        )
+
+        if uploaded_file:
+            img_bytes = uploaded_file.read()
+            st.image(img_bytes, caption=uploaded_file.name, use_container_width=True)
+
+            img_b64 = base64.b64encode(img_bytes).decode("utf-8")
+            mime = uploaded_file.type or "image/jpeg"
+
+            col_e, col_s = st.columns(2)
+            with col_e:
+                extract_btn = st.button("🔍 Extract Vibe", use_container_width=True, key="extract")
+            with col_s:
+                save_btn = st.button("💾 Extract & Save", use_container_width=True, key="save")
+
+            if extract_btn or save_btn:
+                with col_result:
+                    st.markdown("### 🧠 Agent Pipeline")
+                    result_placeholder = st.empty()
+                    full_output = ""
+                    for chunk in vlm_agent.stream_vibe_extraction(img_b64, mime):
+                        full_output += chunk
+                        result_placeholder.markdown(full_output)
+
+                    if save_btn:
+                        st.markdown("---")
+                        with st.spinner("Saving to catalog..."):
+                            saved = vlm_agent.ingest_and_save(img_b64, mime)
+                            if saved and "error" not in saved:
+                                st.success(f"✅ Saved **{saved.get('name')}** (ID: {saved.get('id')})")
+                                st.balloons()
+                            else:
+                                st.error(f"Failed: {saved}")
+
+# --- Catalog Viewer ---
 st.markdown("---")
-catalog = vlm_agent.load_catalog()
-if catalog:
-    st.markdown("### 📊 Current Catalog")
-    
-    vibe_counts = {}
-    for item in catalog:
-        v = item.get("primary_vibe", "unknown")
-        vibe_counts[v] = vibe_counts.get(v, 0) + 1
-    
-    # Stats row
-    cols = st.columns(len(vibe_counts))
-    for i, (vibe, count) in enumerate(sorted(vibe_counts.items(), key=lambda x: -x[1])):
-        with cols[i % len(cols)]:
-            st.metric(vibe.title(), count)
-    
-    st.caption(f"**{len(catalog)} total products** across {len(vibe_counts)} vibes")
+with st.expander("📊 Full Catalog Viewer", expanded=False):
+    catalog = vlm_agent.load_catalog()
+    if catalog:
+        for item in catalog:
+            st.markdown(f"**{item.get('id')}.** {item.get('name')} — *{item.get('primary_vibe')}* — ${item.get('price', 0)}")
+        st.caption(f"{len(catalog)} products total")
+    else:
+        st.info("Catalog is empty.")
