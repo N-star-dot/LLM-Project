@@ -8,30 +8,34 @@ import { Room3D } from "@/components/Room3D";
 import { VibeContext, CuratedProduct, StyleProfile } from "@/lib/types";
 
 type AppState = "input" | "thinking" | "board" | "room";
+type ThinkingStep = "idle" | "vision" | "vision_done" | "aesthetic" | "search" | "curate" | "done";
 
 export default function Home() {
   const [appState, setAppState] = useState<AppState>("input");
-  const [thinkingStep, setThinkingStep] = useState<"idle" | "aesthetic" | "search" | "curate" | "done">("idle");
+  const [thinkingStep, setThinkingStep] = useState<ThinkingStep>("idle");
   const [styleProfile, setStyleProfile] = useState<StyleProfile | null>(null);
   const [searchCount, setSearchCount] = useState(0);
   const [curateCount, setCurateCount] = useState(0);
   const [vibeContext, setVibeContext] = useState<VibeContext | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<CuratedProduct | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [extractedVibe, setExtractedVibe] = useState<string | null>(null);
+  const [hasImage, setHasImage] = useState(false);
 
-  const handleSubmit = useCallback(async (vibe: string) => {
+  const processStream = useCallback(async (body: Record<string, unknown>) => {
     setAppState("thinking");
     setThinkingStep("idle");
     setStyleProfile(null);
     setSearchCount(0);
     setCurateCount(0);
     setError(null);
+    setExtractedVibe(null);
 
     try {
       const res = await fetch("/api/vibe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ vibe }),
+        body: JSON.stringify(body),
       });
 
       if (!res.ok) {
@@ -58,7 +62,12 @@ export default function Home() {
 
           switch (json.event) {
             case "thinking":
-              if (json.data.step === "aesthetic") {
+              if (json.data.step === "vision") {
+                setThinkingStep("vision");
+              } else if (json.data.step === "vision_done") {
+                setThinkingStep("vision_done");
+                setExtractedVibe(json.data.extractedVibe);
+              } else if (json.data.step === "aesthetic") {
                 setThinkingStep("aesthetic");
                 setStyleProfile(json.data.profile);
               } else if (json.data.step === "search") {
@@ -69,6 +78,8 @@ export default function Home() {
                 setCurateCount(json.data.count);
               }
               break;
+            case "error":
+              throw new Error(json.data.message);
             case "result":
               setThinkingStep("done");
               setVibeContext(json.data as VibeContext);
@@ -86,12 +97,29 @@ export default function Home() {
     }
   }, []);
 
+  const handleSubmit = useCallback((vibe: string) => {
+    setHasImage(false);
+    processStream({ vibe });
+  }, [processStream]);
+
+  const handleSubmitWithImage = useCallback((imageBase64: string, mimeType: string, vibe?: string) => {
+    setHasImage(true);
+    processStream({ imageBase64, imageMimeType: mimeType, vibe: vibe || "" });
+  }, [processStream]);
+
+  const handleSubmitWithVideo = useCallback((frames: string[], vibe?: string) => {
+    setHasImage(true);
+    processStream({ videoFrames: frames, vibe: vibe || "" });
+  }, [processStream]);
+
   const handleReset = useCallback(() => {
     setAppState("input");
     setVibeContext(null);
     setSelectedProduct(null);
     setThinkingStep("idle");
     setError(null);
+    setExtractedVibe(null);
+    setHasImage(false);
   }, []);
 
   return (
@@ -137,9 +165,14 @@ export default function Home() {
                 Shop by vibe.
               </h1>
               <p className="text-white/30 text-lg mb-10">
-                Describe how you want your space to feel. We&apos;ll curate the room.
+                Drop a photo or room video, or describe how you want your space to feel.
               </p>
-              <VibeInput onSubmit={handleSubmit} disabled={false} />
+              <VibeInput
+                onSubmit={handleSubmit}
+                onSubmitWithImage={handleSubmitWithImage}
+                onSubmitWithVideo={handleSubmitWithVideo}
+                disabled={false}
+              />
               {error && (
                 <p className="mt-4 text-red-400/80 text-sm">{error}</p>
               )}
@@ -153,6 +186,8 @@ export default function Home() {
               profile={styleProfile}
               searchCount={searchCount}
               curateCount={curateCount}
+              extractedVibe={extractedVibe}
+              hasImage={hasImage}
             />
           )}
 

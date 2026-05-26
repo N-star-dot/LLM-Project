@@ -3,14 +3,25 @@
 import { StyleProfile } from "@/lib/types";
 
 interface ThinkingStateProps {
-  step: "idle" | "aesthetic" | "search" | "curate" | "done";
+  step: "idle" | "vision" | "vision_done" | "aesthetic" | "search" | "curate" | "done";
   profile: StyleProfile | null;
   searchCount: number;
   curateCount: number;
+  extractedVibe: string | null;
+  hasImage: boolean;
 }
 
-export function ThinkingState({ step, profile, searchCount, curateCount }: ThinkingStateProps) {
-  const steps = [
+export function ThinkingState({ step, profile, searchCount, curateCount, extractedVibe, hasImage }: ThinkingStateProps) {
+  const allSteps = [
+    ...(hasImage
+      ? [
+          {
+            key: "vision",
+            label: "Reading your image",
+            detail: extractedVibe ? [`Extracted: "${extractedVibe.slice(0, 120)}${extractedVibe.length > 120 ? "..." : ""}"`] : null,
+          },
+        ]
+      : []),
     {
       key: "aesthetic",
       label: "Analyzing vibe",
@@ -41,8 +52,11 @@ export function ThinkingState({ step, profile, searchCount, curateCount }: Think
     },
   ];
 
-  const stepOrder = ["aesthetic", "search", "curate", "done"];
-  const currentIdx = stepOrder.indexOf(step);
+  const stepOrder = allSteps.map((s) => s.key);
+  const effectiveStep = step === "vision_done" ? "vision_done" : step;
+  const currentIdx = effectiveStep === "vision_done"
+    ? stepOrder.indexOf("vision") + 0.5
+    : stepOrder.indexOf(effectiveStep);
 
   return (
     <div className="w-full max-w-xl mx-auto">
@@ -57,10 +71,11 @@ export function ThinkingState({ step, profile, searchCount, curateCount }: Think
         </div>
 
         <div className="space-y-3">
-          {steps.map((s, i) => {
-            const isActive = s.key === step;
-            const isDone = currentIdx > i;
-            const isPending = currentIdx < i;
+          {allSteps.map((s, i) => {
+            const isVisionDone = s.key === "vision" && effectiveStep === "vision_done";
+            const isActive = s.key === effectiveStep;
+            const isDone = currentIdx > i || isVisionDone;
+            const isPending = !isActive && !isDone;
 
             return (
               <div
@@ -68,10 +83,10 @@ export function ThinkingState({ step, profile, searchCount, curateCount }: Think
                 className={`transition-all duration-300 ${isPending ? "opacity-20" : "opacity-100"}`}
               >
                 <div className="flex items-center gap-2">
-                  <span className={`text-sm font-mono ${isActive ? "text-white" : isDone ? "text-green-400" : "text-white/30"}`}>
+                  <span className={`text-sm font-mono ${isActive && !isVisionDone ? "text-white" : isDone ? "text-green-400" : "text-white/30"}`}>
                     {isDone ? "done" : isActive ? "..." : "   "}
                   </span>
-                  <span className={`text-sm ${isActive ? "text-white" : isDone ? "text-white/60" : "text-white/30"}`}>
+                  <span className={`text-sm ${isActive && !isVisionDone ? "text-white" : isDone ? "text-white/60" : "text-white/30"}`}>
                     {s.label}
                   </span>
                 </div>

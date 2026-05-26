@@ -1,5 +1,6 @@
 import OpenAI from "openai";
 import { catalog } from "@/lib/catalog";
+import { extractVibeFromImage, extractVibeFromVideoFrames } from "@/lib/vision";
 import { StyleProfile, CuratedProduct, VibeContext } from "@/lib/types";
 
 const client = new OpenAI({
@@ -186,10 +187,10 @@ function searchProducts(input: {
 
 export async function POST(req: Request) {
   try {
-    const { vibe } = await req.json();
+    const { vibe, imageBase64, imageMimeType, videoFrames } = await req.json();
 
-    if (!vibe || typeof vibe !== "string") {
-      return Response.json({ error: "vibe is required" }, { status: 400 });
+    if (!vibe && !imageBase64 && !videoFrames) {
+      return Response.json({ error: "vibe, imageBase64, or videoFrames is required" }, { status: 400 });
     }
 
     const encoder = new TextEncoder();
@@ -205,6 +206,35 @@ export async function POST(req: Request) {
         let candidateProducts: typeof catalog = [];
         let curatedSet: { product_id: string; vibe_note: string }[] = [];
 
+        // If video or image provided, extract vibe first
+        let resolvedVibe = vibe || "";
+        if (videoFrames && Array.isArray(videoFrames) && videoFrames.length > 0) {
+          send("thinking", { step: "vision", message: "Analyzing your room..." });
+          try {
+            resolvedVibe = await extractVibeFromVideoFrames(videoFrames);
+            send("thinking", { step: "vision_done", extractedVibe: resolvedVibe });
+          } catch (err) {
+            const msg = err instanceof Error ? err.message : "Failed to analyze video";
+            send("error", { message: msg });
+            controller.close();
+            return;
+          }
+        } else if (imageBase64) {
+          send("thinking", { step: "vision", message: "Reading your image..." });
+          try {
+            resolvedVibe = await extractVibeFromImage(
+              imageBase64,
+              imageMimeType || "image/jpeg"
+            );
+            send("thinking", { step: "vision_done", extractedVibe: resolvedVibe });
+          } catch (err) {
+            const msg = err instanceof Error ? err.message : "Failed to analyze image";
+            send("error", { message: msg });
+            controller.close();
+            return;
+          }
+        }
+
         const messages: OpenAI.ChatCompletionMessageParam[] = [
           {
             role: "system",
@@ -214,7 +244,7 @@ export async function POST(req: Request) {
             role: "user",
             content: `A customer described their desired vibe:
 
-"${vibe}"
+"${resolvedVibe}"
 
 Follow these steps IN ORDER, calling each tool exactly once:
 
