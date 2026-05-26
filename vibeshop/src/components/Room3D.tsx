@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { ArrowLeft, ShoppingCart, Check } from "lucide-react";
 import { CuratedProduct, VibeContext } from "@/lib/types";
+import { Button } from "@/components/ui/button";
 
 interface Room3DProps {
   product: CuratedProduct;
@@ -29,10 +31,15 @@ export function Room3D({ product, context, onBack }: Room3DProps) {
       const width = container.clientWidth;
       const height = container.clientHeight;
 
+      // Use theme-aware colors from CSS variables
+      const styles = getComputedStyle(document.documentElement);
+      const bgColor = styles.getPropertyValue('--background').trim() || '#F7F1E8';
+      const cardColor = styles.getPropertyValue('--card').trim() || '#FFFDF8';
+
       // Scene
       const scene = new THREE.Scene();
-      scene.background = new THREE.Color("#0a0a0a");
-      scene.fog = new THREE.Fog("#0a0a0a", 8, 20);
+      scene.background = new THREE.Color(bgColor);
+      scene.fog = new THREE.Fog(bgColor, 8, 20);
 
       // Camera
       const camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
@@ -71,7 +78,7 @@ export function Room3D({ product, context, onBack }: Room3DProps) {
       const intensity = intensityMap[lighting.intensity] ?? 0.7;
 
       // Ambient
-      const ambient = new THREE.AmbientLight("#ffffff", 0.15);
+      const ambient = new THREE.AmbientLight("#ffffff", 0.25);
       scene.add(ambient);
 
       // Main point light
@@ -88,14 +95,15 @@ export function Room3D({ product, context, onBack }: Room3DProps) {
       scene.add(fillLight);
 
       // Rim light
-      const rimLight = new THREE.DirectionalLight("#ffffff", 0.2);
+      const rimLight = new THREE.DirectionalLight("#ffffff", 0.3);
       rimLight.position.set(-2, 4, -3);
       scene.add(rimLight);
 
-      // Floor
+      // Floor — slightly darker than bg
       const floorGeo = new THREE.PlaneGeometry(12, 12);
+      const floorColor = new THREE.Color(bgColor).multiplyScalar(0.85);
       const floorMat = new THREE.MeshStandardMaterial({
-        color: "#1a1510",
+        color: floorColor,
         roughness: 0.85,
         metalness: 0.05,
       });
@@ -106,8 +114,9 @@ export function Room3D({ product, context, onBack }: Room3DProps) {
 
       // Back wall
       const wallGeo = new THREE.PlaneGeometry(12, 5);
+      const wallColor = new THREE.Color(cardColor).multiplyScalar(0.9);
       const wallMat = new THREE.MeshStandardMaterial({
-        color: "#151210",
+        color: wallColor,
         roughness: 0.9,
         metalness: 0,
       });
@@ -123,12 +132,11 @@ export function Room3D({ product, context, onBack }: Room3DProps) {
       sideWall.receiveShadow = true;
       scene.add(sideWall);
 
-      // Furniture piece - textured box
+      // Furniture piece
       const { w, d, h } = product.dimensions;
-      const scale = 0.02; // inches to scene units
+      const scale = 0.02;
       const boxGeo = new THREE.BoxGeometry(w * scale, h * scale, d * scale);
 
-      // Try to load product image as texture
       const textureLoader = new THREE.TextureLoader();
       const productColor = product.colors[0] || "#555555";
 
@@ -146,7 +154,7 @@ export function Room3D({ product, context, onBack }: Room3DProps) {
           boxMat.needsUpdate = true;
         },
         undefined,
-        () => {} // fail silently, use color
+        () => {}
       );
 
       const furniture = new THREE.Mesh(boxGeo, boxMat);
@@ -155,14 +163,9 @@ export function Room3D({ product, context, onBack }: Room3DProps) {
       furniture.receiveShadow = true;
       scene.add(furniture);
 
-      // Subtle auto-rotate
       let autoRotate = true;
+      controls.addEventListener("start", () => { autoRotate = false; });
 
-      controls.addEventListener("start", () => {
-        autoRotate = false;
-      });
-
-      // Resize handler
       function onResize() {
         if (!container) return;
         const w = container.clientWidth;
@@ -173,21 +176,15 @@ export function Room3D({ product, context, onBack }: Room3DProps) {
       }
       window.addEventListener("resize", onResize);
 
-      // Animate
       function animate() {
         if (cancelled) return;
         requestAnimationFrame(animate);
-
-        if (autoRotate) {
-          furniture.rotation.y += 0.003;
-        }
-
+        if (autoRotate) furniture.rotation.y += 0.003;
         controls.update();
         renderer.render(scene, camera);
       }
       animate();
 
-      // Cleanup
       cleanupRef.current = () => {
         cancelled = true;
         window.removeEventListener("resize", onResize);
@@ -208,48 +205,56 @@ export function Room3D({ product, context, onBack }: Room3DProps) {
   }, [product, context]);
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#0a0a0a] animate-fade-in-up">
+    <div className="fixed inset-0 z-50 bg-background animate-fade-in-up">
       {/* 3D Canvas */}
       <div ref={containerRef} className="w-full h-full" />
 
       {/* Overlay UI */}
       <div className="absolute inset-0 pointer-events-none">
         {/* Top left — product info */}
-        <div className="absolute top-6 left-6 pointer-events-auto">
-          <h3 className="text-xl font-light text-white">{product.name}</h3>
+        <div className="absolute top-6 left-6 pointer-events-auto bg-card/90 backdrop-blur-sm rounded-xl p-4 border border-border/50 max-w-xs">
+          <h3 className="text-lg font-serif text-foreground">{product.name}</h3>
           <div className="flex items-center gap-3 mt-1">
-            <span className="text-lg font-mono text-white/70">
+            <span className="text-lg font-semibold text-foreground">
               ${product.price.toLocaleString()}
             </span>
-            <span className="text-sm text-yellow-400/80">
-              ★ {product.rating}
+            <span className="text-sm text-muted-foreground">
+              <span className="text-yellow-500">&#9733;</span> {product.rating}
             </span>
           </div>
-          <p className="text-sm text-white/30 mt-1 max-w-xs italic">
+          <p className="text-sm text-muted-foreground mt-2 italic leading-relaxed">
             &ldquo;{product.vibe_note}&rdquo;
           </p>
         </div>
 
         {/* Top right — back button */}
-        <button
-          onClick={onBack}
-          className="absolute top-6 right-6 pointer-events-auto text-sm text-white/40 hover:text-white/80 transition-colors px-4 py-2 rounded-lg bg-white/5 border border-white/10 hover:border-white/20 backdrop-blur-sm"
-        >
-          ← Back to mood board
-        </button>
+        <div className="absolute top-6 right-6 pointer-events-auto">
+          <Button variant="outline" onClick={onBack} className="rounded-lg bg-card/90 backdrop-blur-sm">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to room
+          </Button>
+        </div>
 
         {/* Bottom right — add to cart */}
-        <button
-          onClick={() => setCartAdded(true)}
-          disabled={cartAdded}
-          className="absolute bottom-8 right-8 pointer-events-auto px-6 py-3 rounded-xl font-medium text-sm transition-all bg-white text-black hover:bg-white/90 disabled:bg-green-500 disabled:text-white"
-        >
-          {cartAdded ? "Added to Cart ✓" : "Add to Cart"}
-        </button>
+        <div className="absolute bottom-8 right-8 pointer-events-auto">
+          <Button
+            onClick={() => setCartAdded(true)}
+            disabled={cartAdded}
+            className={`rounded-xl h-12 px-6 font-medium ${
+              cartAdded ? 'bg-sage text-primary-foreground' : 'bg-primary hover:bg-primary/90 text-primary-foreground'
+            }`}
+          >
+            {cartAdded ? (
+              <><Check className="w-4 h-4 mr-2" /> Added to Cart</>
+            ) : (
+              <><ShoppingCart className="w-4 h-4 mr-2" /> Add to Cart</>
+            )}
+          </Button>
+        </div>
 
         {/* Bottom left — controls hint */}
-        <div className="absolute bottom-8 left-8 text-xs text-white/20">
-          Drag to orbit · Scroll to zoom
+        <div className="absolute bottom-8 left-8 bg-card/60 backdrop-blur-sm rounded-lg px-3 py-2">
+          <span className="text-xs text-muted-foreground">Drag to orbit &middot; Scroll to zoom</span>
         </div>
       </div>
     </div>

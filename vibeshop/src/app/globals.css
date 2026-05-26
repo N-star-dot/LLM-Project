@@ -1,43 +1,84 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: #0a0a0a;
-  --foreground: #ededed;
+  --background: #F7F1E8;
+  --foreground: #211A16;
+  --card: #FFFDF8;
+  --card-foreground: #211A16;
+  --popover: #FFFDF8;
+  --popover-foreground: #211A16;
+  --primary: #3A2D25;
+  --primary-foreground: #FFFDF8;
+  --secondary: #EFE4D5;
+  --secondary-foreground: #3A2D25;
+  --muted: #EFE4D5;
+  --muted-foreground: #6E6257;
+  --accent: #B96A50;
+  --accent-foreground: #FFFDF8;
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: #FFFDF8;
+  --border: #DDD0BE;
+  --input: #DDD0BE;
+  --ring: #3A2D25;
+  --radius: 0.75rem;
+
+  /* Roomscape custom colors */
+  --sage: #8C9A7B;
+  --olive: #4F5A37;
+  --sand: #D7B892;
+  --warm-brown: #8A5F3D;
+  --success: #6E7D4E;
+  --surface: #FFFDF8;
+  --surface-soft: #EFE4D5;
 }
 
 @theme inline {
+  --font-sans: var(--font-inter), 'Inter', system-ui, sans-serif;
+  --font-serif: var(--font-playfair), 'Playfair Display', Georgia, serif;
+  --font-mono: 'Geist Mono', monospace;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* Custom Roomscape colors */
+  --color-sage: var(--sage);
+  --color-olive: var(--olive);
+  --color-sand: var(--sand);
+  --color-warm-brown: var(--warm-brown);
+  --color-success: var(--success);
+  --color-surface: var(--surface);
+  --color-surface-soft: var(--surface-soft);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
-}
-
-/* Masonry grid */
-.masonry-grid {
-  columns: 3;
-  column-gap: 1rem;
-}
-
-.masonry-grid > * {
-  break-inside: avoid;
-  margin-bottom: 1rem;
-}
-
-@media (max-width: 1024px) {
-  .masonry-grid {
-    columns: 2;
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-}
-
-@media (max-width: 640px) {
-  .masonry-grid {
-    columns: 1;
+  body {
+    @apply bg-background text-foreground;
   }
 }
 
@@ -78,7 +119,22 @@ body {
 .stagger-children > *:nth-child(8) { animation-delay: 560ms; }
 .stagger-children > *:nth-child(9) { animation-delay: 640ms; }
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface-soft);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+}
