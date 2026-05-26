@@ -10,3 +10,8 @@ venv/
 
 # Streamlit local config
 .streamlit/config.toml
+
+# Next.js
+vibeshop/node_modules/
+vibeshop/.next/
+vibeshop/.env.local
